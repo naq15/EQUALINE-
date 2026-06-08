@@ -3,153 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQUALINE | Kalkulator SPLDV Pro</title>
+    <title>EQUALINE | Kalkulator SPLDV</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@600;700;800&display=swap');
+
         body { 
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); 
-            color: #f3f4f6; 
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F4EAD5; 
+            color: #1c1917; 
+            font-family: 'Space Grotesk', sans-serif; 
             min-height: 100vh;
         }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .retro-card {
+            border: 4px solid #1c1917;
+            border-radius: 1.25rem;
+            box-shadow: 8px 8px 0px #1c1917;
+            transition: all 0.2s ease;
         }
+        .retro-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 11px 11px 0px #1c1917;
+        }
+
         .input-box { 
-            background-color: rgba(15, 23, 42, 0.6); 
-            border: 1px solid #475569; 
-            color: white; 
-            border-radius: 0.5rem; 
-            padding: 0.6rem; 
+            background-color: #F4EAD5; 
+            border: 4px solid #1c1917; 
+            color: #1c1917; 
+            border-radius: 0.75rem; 
+            padding: 1rem 1.2rem; 
             width: 100%; 
             outline: none; 
-            transition: all 0.3s ease; 
+            font-size: 2.2rem; 
+            font-weight: 800;
+            text-align: center;
+            transition: all 0.2s; 
+            box-shadow: inset 3px 3px 0px rgba(0,0,0,0.06);
         }
+
         .input-box:focus { 
-            border-color: #3b82f6; 
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            background-color: #fef08a; 
+            box-shadow: 5px 5px 0px #1c1917;
+            transform: translate(-2px, -2px);
         }
-        pre { 
-            font-family: 'Fira Code', 'Courier New', Courier, monospace; 
-            line-height: 1.6; 
-            white-space: pre-wrap; 
-            word-wrap: break-word;
-        }
-        /* Custom Scrollbar for Terminal */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .math-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem; 
+            line-height: 2;
+            font-weight: 700;
+            color: #1c1917;
         }
-        .animate-fade-in { animation: fadeInUp 0.6s ease-out forwards; }
+
+        ::-webkit-scrollbar { width: 14px; height: 14px; }
+        ::-webkit-scrollbar-track { background: #F4EAD5; border-left: 3px solid #1c1917; border-top: 3px solid #1c1917;}
+        ::-webkit-scrollbar-thumb { background: #1c1917; border-radius: 0px; }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-pop-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
-<body class="p-4 md:p-8 flex flex-col items-center">
+<body class="p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
 
-    <div class="max-w-5xl w-full text-center mb-10 mt-4">
-        <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 tracking-wider mb-2 drop-shadow-lg">
+    <div class="max-w-6xl w-full text-center mb-12 mt-4">
+        <h1 class="text-6xl md:text-8xl font-extrabold text-[#1c1917] tracking-tight mb-6 drop-shadow-[5px_5px_0px_#f97316]">
             EQUALINE
         </h1>
-        <p class="text-gray-300 text-lg font-medium tracking-wide">Kalkulator Sistem Persamaan Linear Dua Variabel</p>
-        <div class="h-1 w-32 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.6)]"></div>
+        <p class="text-stone-800 font-bold text-2xl md:text-3xl bg-[#fcd34d] inline-block px-6 py-3 border-4 border-stone-800 rounded-xl shadow-[5px_5px_0px_#1c1917]">
+            Kalkulator Sistem Persamaan Linear Dua Variabel
+        </p>
     </div>
 
-    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="max-w-[95%] xl:max-w-7xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 mx-auto">
         
-        <div class="glass-panel p-6 rounded-2xl shadow-xl transition transform hover:-translate-y-1 duration-300">
-            <h2 class="text-xl font-bold mb-5 flex items-center text-blue-400">
-                <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">1</div>
+        <div class="retro-card bg-[#FFC4D9] p-8 md:p-10">
+            <h2 class="text-4xl lg:text-5xl font-extrabold mb-10 flex items-center justify-center text-stone-900 border-b-4 border-stone-900 pb-6 text-center">
+                <span class="w-16 h-16 rounded-full bg-stone-900 text-[#FFC4D9] flex items-center justify-center mr-5 text-3xl border-4 border-stone-900">1</span>
                 Persamaan 1
             </h2>
-            <div class="space-y-4">
-                <div><label class="text-sm text-gray-300 font-medium">Koefisien x</label><input type="number" id="a1" value="2" class="input-box mt-1"></div>
-                <div><label class="text-sm text-gray-300 font-medium">Koefisien y</label><input type="number" id="b1" value="3" class="input-box mt-1"></div>
-                <div><label class="text-sm text-gray-300 font-medium">Konstanta</label><input type="number" id="c1" value="12" class="input-box mt-1"></div>
+            <div class="space-y-8 text-center">
+                <div><label class="block text-2xl lg:text-3xl text-stone-900 font-extrabold uppercase tracking-wide mb-3">Koefisien X</label><input type="number" id="a1" value="2" class="input-box"></div>
+                <div><label class="block text-2xl lg:text-3xl text-stone-900 font-extrabold uppercase tracking-wide mb-3">Koefisien Y</label><input type="number" id="b1" value="3" class="input-box"></div>
+                <div><label class="block text-2xl lg:text-3xl text-stone-900 font-extrabold uppercase tracking-wide mb-3">Konstanta</label><input type="number" id="c1" value="12" class="input-box"></div>
             </div>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl shadow-xl transition transform hover:-translate-y-1 duration-300">
-            <h2 class="text-xl font-bold mb-5 flex items-center text-rose-400">
-                <div class="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center mr-3">2</div>
+        <div class="retro-card bg-[#9BF6FF] p-8 md:p-10">
+            <h2 class="text-4xl lg:text-5xl font-extrabold mb-10 flex items-center justify-center text-stone-900 border-b-4 border-stone-900 pb-6 text-center">
+                <span class="w-16 h-16 rounded-full bg-stone-900 text-[#9BF6FF] flex items-center justify-center mr-5 text-3xl border-4 border-stone-900">2</span>
                 Persamaan 2
             </h2>
-            <div class="space-y-4">
-                <div><label class="text-sm text-gray-300 font-medium">Koefisien x</label><input type="number" id="a2" value="1" class="input-box mt-1"></div>
-                <div><label class="text-sm text-gray-300 font-medium">Koefisien y</label><input type="number" id="b2" value="-1" class="input-box mt-1"></div>
-                <div><label class="text-sm text-gray-300 font-medium">Konstanta</label><input type="number" id="c2" value="1" class="input-box mt-1"></div>
+            <div class="space-y-8 text-center">
+                <div><label class="block text-2xl lg:text-3xl text-stone-900 font-extrabold uppercase tracking-wide mb-3">Koefisien X</label><input type="number" id="a2" value="1" class="input-box"></div>
+                <div><label class="block text-2xl lg:text-3xl text-stone-900 font-extrabold uppercase tracking-wide mb-3">Koefisien Y</label><input type="number" id="b2" value="-1" class="input-box"></div>
+                <div><label class="block text-2xl lg:text-3xl text-stone-900 font-extrabold uppercase tracking-wide mb-3">Konstanta</label><input type="number" id="c2" value="1" class="input-box"></div>
             </div>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl shadow-xl flex flex-col justify-center border-t-4 border-t-purple-500">
-            <label class="text-sm text-gray-300 font-medium mb-3">Pilih Metode Penyelesaian:</label>
+        <div class="retro-card bg-[#FDFFB6] p-8 md:p-10 flex flex-col">
+            <label class="text-3xl lg:text-4xl text-stone-900 font-extrabold mb-8 border-b-4 border-stone-900 pb-6 text-center">Pilih Metode:</label>
             
-            <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="grid grid-cols-1 gap-5 mb-10">
                 <label class="cursor-pointer">
                     <input type="radio" name="metode" value="1" class="peer hidden">
-                    <div class="peer-checked:bg-blue-600/50 peer-checked:border-blue-400 peer-checked:text-white bg-slate-800/50 border border-slate-600 text-gray-400 rounded-xl p-3 text-center transition-all hover:bg-slate-700/50">
-                        <div class="font-semibold text-sm">Substitusi</div>
+                    <div class="peer-checked:bg-[#f97316] peer-checked:text-stone-900 bg-[#F4EAD5] border-4 border-stone-900 text-stone-800 rounded-xl p-5 text-center transition-all hover:bg-[#ffedd5] shadow-[4px_4px_0px_#1c1917] peer-checked:translate-x-[3px] peer-checked:translate-y-[3px] peer-checked:shadow-[1px_1px_0px_#1c1917]">
+                        <div class="font-extrabold text-2xl">Substitusi</div>
                     </div>
                 </label>
                 <label class="cursor-pointer">
                     <input type="radio" name="metode" value="2" class="peer hidden">
-                    <div class="peer-checked:bg-rose-600/50 peer-checked:border-rose-400 peer-checked:text-white bg-slate-800/50 border border-slate-600 text-gray-400 rounded-xl p-3 text-center transition-all hover:bg-slate-700/50">
-                        <div class="font-semibold text-sm">Eliminasi</div>
+                    <div class="peer-checked:bg-[#f97316] peer-checked:text-stone-900 bg-[#F4EAD5] border-4 border-stone-900 text-stone-800 rounded-xl p-5 text-center transition-all hover:bg-[#ffedd5] shadow-[4px_4px_0px_#1c1917] peer-checked:translate-x-[3px] peer-checked:translate-y-[3px] peer-checked:shadow-[1px_1px_0px_#1c1917]">
+                        <div class="font-extrabold text-2xl">Eliminasi</div>
                     </div>
                 </label>
                 <label class="cursor-pointer">
                     <input type="radio" name="metode" value="3" class="peer hidden">
-                    <div class="peer-checked:bg-purple-600/50 peer-checked:border-purple-400 peer-checked:text-white bg-slate-800/50 border border-slate-600 text-gray-400 rounded-xl p-3 text-center transition-all hover:bg-slate-700/50">
-                        <div class="font-semibold text-sm">Campuran</div>
+                    <div class="peer-checked:bg-[#f97316] peer-checked:text-stone-900 bg-[#F4EAD5] border-4 border-stone-900 text-stone-800 rounded-xl p-5 text-center transition-all hover:bg-[#ffedd5] shadow-[4px_4px_0px_#1c1917] peer-checked:translate-x-[3px] peer-checked:translate-y-[3px] peer-checked:shadow-[1px_1px_0px_#1c1917]">
+                        <div class="font-extrabold text-2xl">Campuran</div>
                     </div>
                 </label>
                 <label class="cursor-pointer">
                     <input type="radio" name="metode" value="4" class="peer hidden" checked>
-                    <div class="peer-checked:bg-emerald-600/50 peer-checked:border-emerald-400 peer-checked:text-white bg-slate-800/50 border border-slate-600 text-gray-400 rounded-xl p-3 text-center transition-all hover:bg-slate-700/50">
-                        <div class="font-semibold text-sm">Grafik</div>
+                    <div class="peer-checked:bg-[#f97316] peer-checked:text-stone-900 bg-[#F4EAD5] border-4 border-stone-900 text-stone-800 rounded-xl p-5 text-center transition-all hover:bg-[#ffedd5] shadow-[4px_4px_0px_#1c1917] peer-checked:translate-x-[3px] peer-checked:translate-y-[3px] peer-checked:shadow-[1px_1px_0px_#1c1917]">
+                        <div class="font-extrabold text-2xl">Grafik</div>
                     </div>
                 </label>
             </div>
             
-            <button onclick="jalankanKalkulator()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold py-4 px-6 rounded-xl shadow-[0_0_15px_rgba(99,102,241,0.5)] transition-all transform hover:scale-105 active:scale-95">
-                Hitung Solusi! <i class="fas fa-rocket ml-2"></i>
+            <button onclick="jalankanKalkulator()" class="mt-auto w-full bg-[#10b981] hover:bg-[#059669] text-stone-900 border-4 border-stone-900 font-extrabold text-3xl lg:text-4xl py-6 px-6 rounded-2xl shadow-[6px_6px_0px_#1c1917] transition-all transform hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[3px_3px_0px_#1c1917] flex items-center justify-center tracking-wide">
+                HITUNG! <i class="fas fa-bolt ml-4"></i>
             </button>
         </div>
     </div>
 
-    <div id="hasil-container" class="max-w-6xl w-full mt-10 hidden flex-col lg:flex-row gap-6 animate-fade-in">
+    <div id="hasil-container" class="max-w-[95%] xl:max-w-7xl w-full mt-14 hidden flex-col xl:flex-row gap-10 animate-pop-in mx-auto">
         
-        <div class="bg-[#0d1117] p-5 rounded-2xl shadow-2xl border border-gray-700 flex-1 overflow-x-auto relative">
-            <div class="absolute top-0 left-0 w-full h-10 bg-gray-800/80 border-b border-gray-700 flex items-center px-4 rounded-t-2xl z-10">
-                <div class="flex space-x-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500 shadow-sm"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500 shadow-sm"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500 shadow-sm"></div>
-                </div>
-                <span class="text-xs text-gray-400 font-mono ml-4"><i class="fas fa-terminal mr-1"></i> Output Terminal</span>
+        <div id="step-container" class="flex-1 flex flex-col gap-10">
             </div>
-            <pre id="terminal-output" class="text-green-400 text-sm mt-8 pb-2"></pre>
-        </div>
 
-        <div id="grafik-box" class="glass-panel p-5 rounded-2xl shadow-2xl flex-1 hidden flex-col relative">
-            <h3 class="text-center font-bold text-gray-200 mb-2 tracking-wide flex justify-center items-center">
-                <i class="fas fa-chart-line mr-2 text-blue-400"></i> Visualisasi Grafik
-            </h3>
-            <div class="text-center text-xs text-gray-400 mb-2">
-                <i class="fas fa-mouse mr-1"></i> Scroll untuk Zoom | Klik & Geser untuk Pan
-                <button onclick="resetZoom()" class="ml-2 px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-gray-200 transition">Reset View</button>
+        <div id="grafik-box" class="retro-card bg-[#CAFFBF] p-8 flex-1 hidden flex-col relative h-fit sticky top-6">
+            <div class="flex justify-between items-center mb-8 border-b-4 border-stone-900 pb-5">
+                <h3 class="font-extrabold text-3xl md:text-4xl text-stone-900 flex items-center">
+                    <i class="fas fa-chart-area mr-4 text-4xl"></i> VISUAL GRAFIK
+                </h3>
+                <button onclick="resetZoom()" class="px-5 py-3 bg-[#F4EAD5] border-4 border-stone-900 hover:bg-[#fcd34d] rounded-xl text-stone-900 text-lg font-extrabold shadow-[3px_3px_0px_#1c1917] transition-all">
+                    <i class="fas fa-compress-arrows-alt mr-2"></i> RESET
+                </button>
             </div>
-            <div class="relative w-full flex-1 min-h-[400px]">
+            <div class="relative w-full flex-1 min-h-[500px] bg-[#F4EAD5] border-4 border-stone-900 rounded-xl overflow-hidden">
                 <canvas id="grafikCanvas"></canvas>
             </div>
         </div>
@@ -157,17 +165,56 @@
 
     <script>
         let myChart = null;
-        let outputText = "";
+        let stepList = [];
+        let currentStepIndex = -1;
 
         function resetZoom() {
-            if (myChart) {
-                myChart.resetZoom();
+            if (myChart) myChart.resetZoom();
+        }
+
+        function resetSteps() {
+            stepList = [];
+            currentStepIndex = -1;
+        }
+
+        function buatStep(judul, bgClass, textClass) {
+            stepList.push({ judul, bgClass, textClass, konten: "" });
+            currentStepIndex++;
+        }
+
+        function out(teks = "") {
+            if (currentStepIndex >= 0) {
+                stepList[currentStepIndex].konten += teks + "\n";
             }
         }
 
-        // ----- UTILITAS -----
-        function out(teks = "") { outputText += teks + "\n"; }
+        function renderSteps() {
+            let container = document.getElementById('step-container');
+            container.innerHTML = "";
+            
+            stepList.forEach(step => {
+                let card = document.createElement('div');
+                card.className = "retro-card overflow-hidden bg-[#F4EAD5]";
+                
+                let header = document.createElement('div');
+                header.className = `${step.bgClass} ${step.textClass} px-8 py-6 text-2xl md:text-3xl font-extrabold border-b-4 border-stone-900 uppercase tracking-wide`;
+                header.innerHTML = step.judul;
+                
+                let body = document.createElement('div');
+                body.className = "p-8 md:p-10 overflow-x-auto";
+                
+                let pre = document.createElement('pre');
+                pre.className = `math-text whitespace-pre`;
+                pre.innerHTML = step.konten.trimEnd(); 
+                
+                body.appendChild(pre);
+                card.appendChild(header);
+                card.appendChild(body);
+                container.appendChild(card);
+            });
+        }
 
+        // ----- UTILITAS MATEMATIKA -----
         function format_angka(angka) {
             return Number.isInteger(angka) ? angka : parseFloat(angka.toFixed(4));
         }
@@ -200,12 +247,16 @@
         }
 
         function cetak_HP(a1, b1, c1, a2, b2, c2) {
+            buatStep("✨ HIMPUNAN PENYELESAIAN (HP) ✨", "bg-[#10b981]", "text-stone-900");
             let D = a1 * b2 - a2 * b1;
             let Dx = c1 * b2 - c2 * b1;
             let Dy = a1 * c2 - a2 * c1;
             let str_x = bentuk_pecahan(Dx, D);
             let str_y = bentuk_pecahan(Dy, D);
-            out(`\n✨ Himpunan Penyelesaian (HP) = { ${str_x}, ${str_y} } ✨`);
+            out(`Solusi Akhir:`);
+            out(`x = ${str_x}`);
+            out(`y = ${str_y}`);
+            out(`\nHP = { (${str_x}, ${str_y}) }`);
         }
 
         function percantik(teks) {
@@ -244,7 +295,7 @@
             out(`   ${kr1.padStart(lebar_k, ' ')} = ${kn1}`);
             out(`   ${kr2.padStart(lebar_k, ' ')} = ${kn2}`);
             let panjang_garis = lebar_k + 3 + Math.max(kn1.length, kn2.length) + ekstra;
-            out("   " + "─".repeat(panjang_garis) + ` ${operator}\n`);
+            out("   " + "_".repeat(panjang_garis) + ` ${operator}\n`);
         }
 
         function cetak_pecahan_sejajar(kiri, pembilang, penyebut, lebar) {
@@ -254,21 +305,20 @@
             let centerStr = (str, len) => str.padStart(str.length + Math.floor((len - str.length) / 2), ' ').padEnd(len, ' ');
             
             out(`      ${" ".repeat(lebar)}   ${centerStr(atas, panjang_garis)}`);
-            out(`      ${percantik(String(kiri)).padStart(lebar, ' ')} = ${"─".repeat(panjang_garis)}`);
+            out(`      ${percantik(String(kiri)).padStart(lebar, ' ')} = ${"_".repeat(panjang_garis)}`);
             out(`      ${" ".repeat(lebar)}   ${centerStr(bawah, panjang_garis)}`);
         }
 
         // ================= METODE SUBSTITUSI =================
         function metode_substitusi(a1, b1, c1, a2, b2, c2) {
-            out("\n--- METODE SUBSTITUSI ---");
-            out("Langkah 1: Ubah Persamaan 1 untuk menyatakan 'x'");
+            buatStep("1. UBAH PERSAMAAN UNTUK MENCARI 'x'", "bg-[#fcd34d]", "text-stone-900");
             let teks_l1 = `${a1}x = ${c1} - (${b1}y)`;
             out(`   ${percantik(teks_l1)}`);
             
             let L_x = hitung_lebar("x");
             cetak_pecahan_sejajar("x", `${c1} - (${b1}y)`, a1, L_x); 
             
-            out("\nLangkah 2: Substitusi nilai 'x' ke Persamaan 2");
+            buatStep("2. SUBSTITUSI 'x' KE PERSAMAAN 2", "bg-[#fcd34d]", "text-stone-900");
             let tanda_b2_asli = b2 >= 0 ? "+" : "-";
             let teks_pers_2 = percantik(`${a2} [ (${c1} - ${b1}y) / ${a1} ] ${tanda_b2_asli} ${Math.abs(b2)}y = ${c2}`);
             out(`   ${teks_pers_2}`);
@@ -300,7 +350,7 @@
             let pecahan_y = bentuk_pecahan(sisa_c, y_kiri);
             cetak_baris("y", `${pecahan_y}`, L);
             
-            out("\nLangkah 3: Substitusi nilai 'y' untuk mencari 'x'\n");
+            buatStep("3. SUBSTITUSI 'y' UNTUK MENCARI 'x'", "bg-[#fcd34d]", "text-stone-900");
             let L2 = hitung_lebar("x"); 
             cetak_pecahan_sejajar("x", `${c1} - (${b1} × (${pecahan_y}))`, a1, L2);
             
@@ -319,7 +369,7 @@
 
         // ================= METODE ELIMINASI =================
         function metode_eliminasi(a1, b1, c1, a2, b2, c2) {
-            out("\n--- METODE ELIMINASI ---");
+            buatStep("1. ELIMINASI VARIABEL X (Mencari nilai y)", "bg-[#fcd34d]", "text-stone-900");
             let tanda_b1 = b1 >= 0 ? "+" : "-";
             let tanda_b2 = b2 >= 0 ? "+" : "-";
             let kiri_p1 = percantik(`${a1}x ${tanda_b1} ${Math.abs(b1)}y`);
@@ -330,10 +380,9 @@
             let p2_rata = `${kiri_p2.padStart(L_awal, ' ')} = ${c2}`;
             let panjang_maks = Math.max(p1_rata.length, p2_rata.length);
 
-            out("Langkah 1: Eliminasi variabel 'x' untuk mencari 'y'");
             out(`   ${p1_rata.padEnd(panjang_maks, ' ')} | × ${Math.abs(a2)}`);
             out(`   ${p2_rata.padEnd(panjang_maks, ' ')} | × ${Math.abs(a1)}`);
-            out("   " + "─".repeat(panjang_maks + 10));
+            out("   " + "_".repeat(panjang_maks + 10));
             
             let p1_a = format_angka(a1*Math.abs(a2)), p1_b = format_angka(b1*Math.abs(a2)), p1_c = format_angka(c1*Math.abs(a2));
             let p2_a = format_angka(a2*Math.abs(a1)), p2_b = format_angka(b2*Math.abs(a1)), p2_c = format_angka(c2*Math.abs(a1));
@@ -351,10 +400,10 @@
             cetak_pecahan_sejajar("y", format_angka(sisa_c), format_angka(sisa_b), L1);
             cetak_baris("y", `${bentuk_pecahan(sisa_c, sisa_b)}`, L1);
             
-            out("\nLangkah 2: Eliminasi variabel 'y' untuk mencari 'x'");
+            buatStep("2. ELIMINASI VARIABEL Y (Mencari nilai x)", "bg-[#fcd34d]", "text-stone-900");
             out(`   ${p1_rata.padEnd(panjang_maks, ' ')} | × ${Math.abs(b2)}`);
             out(`   ${p2_rata.padEnd(panjang_maks, ' ')} | × ${Math.abs(b1)}`);
-            out("   " + "─".repeat(panjang_maks + 10));
+            out("   " + "_".repeat(panjang_maks + 10));
             
             let p1_a_y = format_angka(a1*Math.abs(b2)), p1_b_y = format_angka(b1*Math.abs(b2)), p1_c_y = format_angka(c1*Math.abs(b2));
             let p2_a_y = format_angka(a2*Math.abs(b1)), p2_b_y = format_angka(b2*Math.abs(b1)), p2_c_y = format_angka(c2*Math.abs(b1));
@@ -377,7 +426,7 @@
 
         // ================= METODE CAMPURAN =================
         function metode_campuran(a1, b1, c1, a2, b2, c2) {
-            out("\n--- METODE CAMPURAN ---");
+            buatStep("1. ELIMINASI VARIABEL X (Mencari nilai y)", "bg-[#fcd34d]", "text-stone-900");
             let tanda_b1 = b1 >= 0 ? "+" : "-";
             let tanda_b2 = b2 >= 0 ? "+" : "-";
             let kiri_p1 = percantik(`${a1}x ${tanda_b1} ${Math.abs(b1)}y`);
@@ -388,10 +437,9 @@
             let p2_rata = `${kiri_p2.padStart(L_awal, ' ')} = ${c2}`;
             let panjang_maks = Math.max(p1_rata.length, p2_rata.length);
 
-            out("Langkah 1: Eliminasi variabel 'x' untuk mencari 'y'");
             out(`   ${p1_rata.padEnd(panjang_maks, ' ')} | × ${Math.abs(a2)}`);
             out(`   ${p2_rata.padEnd(panjang_maks, ' ')} | × ${Math.abs(a1)}`);
-            out("   " + "─".repeat(panjang_maks + 10));
+            out("   " + "_".repeat(panjang_maks + 10));
             
             let p1_a = format_angka(a1*Math.abs(a2)), p1_b = format_angka(b1*Math.abs(a2)), p1_c = format_angka(c1*Math.abs(a2));
             let p2_a = format_angka(a2*Math.abs(a1)), p2_b = format_angka(b2*Math.abs(a1)), p2_c = format_angka(c2*Math.abs(a1));
@@ -410,7 +458,7 @@
             let pecahan_y = bentuk_pecahan(sisa_c, sisa_b);
             cetak_baris("y", `${pecahan_y}`, L1);
             
-            out("\nLangkah 2: Substitusi nilai 'y' ke Persamaan 1");
+            buatStep("2. SUBSTITUSI NILAI 'y' KE PERSAMAAN 1", "bg-[#fcd34d]", "text-stone-900");
             let teks_subst = `${a1}x + ${b1}(${pecahan_y}) = ${c1}`;
             out(`   ${percantik(teks_subst)}\n`);
             
@@ -424,56 +472,70 @@
         }
 
         // ================= METODE GRAFIK =================
-        function metode_grafik(a1, b1, c1, a2, b2, c2) {
-            out("\n--- METODE GRAFIK ---");
-            out("Langkah 1: Menentukan titik potong pada sumbu X dan Y.");
-            
-            let centerStr = (str, len) => str.padStart(str.length + Math.floor((len - str.length) / 2), ' ').padEnd(len, ' ');
+        function jabarkan_tabel(a, b, c, nama) {
+            let tanda_b = b >= 0 ? "+" : "-";
+            let teks_grafik = `${a}x ${tanda_b} ${Math.abs(b)}y = ${c}`;
+            out(`\n>> ${nama}: ${percantik(teks_grafik)}\n`);
 
-            function jabarkan_tabel(a, b, c, nama) {
-                let tanda_b = b >= 0 ? "+" : "-";
-                let teks_grafik = `${a}x ${tanda_b} ${Math.abs(b)}y = ${c}`;
-                out(`\n>> ${nama}: ${percantik(teks_grafik)}`);
+            if (c === 0) {
+                out(`   - Garis melewati titik pusat (0,0).\n`);
+                let x_uji = b !== 0 ? b : 1;
+                let y_uji = b !== 0 ? format_angka(-a * x_uji / b) : 0;
+                let y_val = bentuk_pecahan(-a*x_uji, b);
                 
-                let garis_atas   = "   ┌───────────────┬───────────────┬───────────────┐";
-                let garis_tengah = "   ├───────────────┼───────────────┼───────────────┤";
-                let garis_bawah  = "   └───────────────┴───────────────┴───────────────┘";
+                let tbl = `   <div class="inline-block mt-3 mb-6"><table class="border-4 border-stone-900 bg-white text-center shadow-[4px_4px_0px_#1c1917] rounded-xl overflow-hidden font-bold">
+                    <tr class="border-b-4 border-stone-900">
+                        <th class="border-r-4 border-stone-900 bg-[#fcd34d] px-6 py-3 font-extrabold w-32">x</th>
+                        <td class="border-r-4 border-stone-900 px-6 py-3 w-32">0</td>
+                        <td class="px-6 py-3 w-32">${x_uji}</td>
+                    </tr>
+                    <tr class="border-b-4 border-stone-900">
+                        <th class="border-r-4 border-stone-900 bg-[#fcd34d] px-6 py-3 font-extrabold">y</th>
+                        <td class="border-r-4 border-stone-900 px-6 py-3">0</td>
+                        <td class="px-6 py-3">${y_val}</td>
+                    </tr>
+                    <tr>
+                        <th class="border-r-4 border-stone-900 bg-[#fcd34d] px-6 py-3 font-extrabold">(x, y)</th>
+                        <td class="border-r-4 border-stone-900 px-6 py-3">(0, 0)</td>
+                        <td class="px-6 py-3">(${x_uji}, ${y_val})</td>
+                    </tr>
+                </table></div>`;
+                out(tbl);
+            } else {
+                let y_potong = b !== 0 ? bentuk_pecahan(c, b) : "-";
+                let x_potong = a !== 0 ? bentuk_pecahan(c, a) : "-";
 
-                if (c === 0) {
-                    out(`   - Garis melewati titik pusat (0,0).`);
-                    let x_uji = b !== 0 ? b : 1;
-                    let y_uji = b !== 0 ? format_angka(-a * x_uji / b) : 0;
-                    
-                    out("\n   Tabel Koordinat:");
-                    out(garis_atas);
-                    out(`   │ ${centerStr('x',13)} │ ${centerStr('0',13)} │ ${centerStr(String(x_uji),13)} │`);
-                    out(garis_tengah);
-                    out(`   │ ${centerStr('y',13)} │ ${centerStr('0',13)} │ ${centerStr(bentuk_pecahan(-a*x_uji, b),13)} │`);
-                    out(garis_tengah);
-                    out(`   │ ${centerStr('(x, y)',13)} │ ${centerStr('(0, 0)',13)} │ ${centerStr(`(${x_uji}, ${bentuk_pecahan(-a*x_uji, b)})`,13)} │`);
-                    out(garis_bawah);
-                } else {
-                    let y_potong = b !== 0 ? bentuk_pecahan(c, b) : "-";
-                    let x_potong = a !== 0 ? bentuk_pecahan(c, a) : "-";
-
-                    let str_p1 = b !== 0 ? `(0, ${y_potong})` : "-";
-                    let str_p2 = a !== 0 ? `(${x_potong}, 0)` : "-";
-                    
-                    out("\n   Tabel Koordinat:");
-                    out(garis_atas);
-                    out(`   │ ${centerStr('x',13)} │ ${centerStr('0',13)} │ ${centerStr(String(x_potong),13)} │`);
-                    out(garis_tengah);
-                    out(`   │ ${centerStr('y',13)} │ ${centerStr(String(y_potong),13)} │ ${centerStr('0',13)} │`);
-                    out(garis_tengah);
-                    out(`   │ ${centerStr('(x, y)',13)} │ ${centerStr(str_p1,13)} │ ${centerStr(str_p2,13)} │`);
-                    out(garis_bawah);
-                }
+                let str_p1 = b !== 0 ? `(0, ${y_potong})` : "-";
+                let str_p2 = a !== 0 ? `(${x_potong}, 0)` : "-";
+                
+                let tbl = `   <div class="inline-block mt-3 mb-6"><table class="border-4 border-stone-900 bg-white text-center shadow-[4px_4px_0px_#1c1917] rounded-xl overflow-hidden font-bold">
+                    <tr class="border-b-4 border-stone-900">
+                        <th class="border-r-4 border-stone-900 bg-[#fcd34d] px-6 py-3 font-extrabold w-32">x</th>
+                        <td class="border-r-4 border-stone-900 px-6 py-3 w-32">0</td>
+                        <td class="px-6 py-3 w-32">${x_potong}</td>
+                    </tr>
+                    <tr class="border-b-4 border-stone-900">
+                        <th class="border-r-4 border-stone-900 bg-[#fcd34d] px-6 py-3 font-extrabold">y</th>
+                        <td class="border-r-4 border-stone-900 px-6 py-3">${y_potong}</td>
+                        <td class="px-6 py-3">0</td>
+                    </tr>
+                    <tr>
+                        <th class="border-r-4 border-stone-900 bg-[#fcd34d] px-6 py-3 font-extrabold">(x, y)</th>
+                        <td class="border-r-4 border-stone-900 px-6 py-3">${str_p1}</td>
+                        <td class="px-6 py-3">${str_p2}</td>
+                    </tr>
+                </table></div>`;
+                out(tbl);
             }
+        }
 
-            jabarkan_tabel(a1, b1, c1, "Garis 1 (Biru)");
-            jabarkan_tabel(a2, b2, c2, "Garis 2 (Merah)");
+        function metode_grafik(a1, b1, c1, a2, b2, c2) {
+            buatStep("1. TITIK POTONG SUMBU (Tabel Koordinat)", "bg-[#fcd34d]", "text-stone-900");
+            
+            jabarkan_tabel(a1, b1, c1, "Garis 1 (Pink)");
+            jabarkan_tabel(a2, b2, c2, "Garis 2 (Biru)");
 
-            out("\nLangkah 2: Visualisasi Grafik Solusi");
+            buatStep("2. ANALISIS GRAFIK", "bg-[#fcd34d]", "text-stone-900");
             let D = a1 * b2 - a2 * b1;
             if (D === 0) {
                 out("Garis sejajar atau berimpit, tidak ada satu titik potong pasti.");
@@ -483,7 +545,7 @@
             let Dx = c1 * b2 - c2 * b1;
             let Dy = a1 * c2 - a2 * c1;
             
-            out(`   Berdasarkan grafik disamping, kedua garis saling berpotongan.`);
+            out(`Berdasarkan grafik di samping, kedua garis berpotongan di titik (x, y).`);
             cetak_HP(a1, b1, c1, a2, b2, c2);
 
             let x_float = Dx / D;
@@ -535,7 +597,7 @@
             chart.update('none'); 
         }
 
-        // ================= GAMBAR GRAFIK (CHART.JS dengan INFINITE ZOOM) =================
+        // ================= GAMBAR GRAFIK (CHART.JS) =================
         function gambarGrafikJS(a1, b1, c1, a2, b2, c2, x_sol, y_sol, str_x, str_y) {
             let box = document.getElementById('grafik-box');
             box.classList.remove('hidden');
@@ -543,7 +605,7 @@
             let ctx = document.getElementById('grafikCanvas').getContext('2d');
             if(myChart) myChart.destroy();
 
-            let view_rentang = 15;
+            let view_rentang = 10;
             let x_min = Math.floor(x_sol) - view_rentang;
             let x_max = Math.ceil(x_sol) + view_rentang;
 
@@ -557,66 +619,58 @@
                 ? [{x: x_min, y: cariY(a2, b2, c2, x_min)}, {x: x_sol, y: y_sol}, {x: x_max, y: cariY(a2, b2, c2, x_max)}] 
                 : [{x: c2/a2, y: y_sol-view_rentang}, {x: c2/a2, y: y_sol}, {x: c2/a2, y: y_sol+view_rentang}];
 
-            Chart.defaults.color = '#9ca3af';
-            Chart.defaults.font.family = 'Inter';
+            Chart.defaults.color = '#1c1917';
+            Chart.defaults.font.family = 'Space Grotesk';
+            Chart.defaults.font.size = 16;
 
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     datasets: [
-                        { label: 'Persamaan 1', data: dataGaris1, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, pointRadius: 0, tension: 0 },
-                        { label: 'Persamaan 2', data: dataGaris2, borderColor: '#f43f5e', backgroundColor: 'rgba(244, 63, 94, 0.1)', borderWidth: 3, pointRadius: 0, tension: 0 },
-                        { label: `HP: (${str_x}, ${str_y})`, data: [{x: x_sol, y: y_sol}], backgroundColor: '#10b981', borderColor: '#ffffff', borderWidth: 3, pointRadius: 7, pointHoverRadius: 10, type: 'scatter' }
+                        { label: 'Garis 1 (Pink)', data: dataGaris1, borderColor: '#f43f5e', backgroundColor: 'transparent', borderWidth: 6, pointRadius: 0, tension: 0 },
+                        { label: 'Garis 2 (Biru)', data: dataGaris2, borderColor: '#0ea5e9', backgroundColor: 'transparent', borderWidth: 6, pointRadius: 0, tension: 0 },
+                        { label: `Titik Potong HP`, data: [{x: x_sol, y: y_sol}], backgroundColor: '#f97316', borderColor: '#1c1917', borderWidth: 5, pointRadius: 12, pointHoverRadius: 15, type: 'scatter' }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { 
-                        legend: { labels: { color: '#f3f4f6', font: { weight: 'bold' }, padding: 20 } },
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 15, padding: 30, font: {weight: 'bold', size: 16} } },
                         tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                            titleFont: { size: 14 },
-                            bodyFont: { size: 14, weight: 'bold' },
-                            padding: 12,
-                            borderColor: '#374151',
-                            borderWidth: 1,
+                            backgroundColor: '#1c1917',
+                            titleColor: '#F4EAD5',
+                            bodyColor: '#F4EAD5',
+                            titleFont: { size: 18, weight: 'bold' },
+                            bodyFont: { size: 18 },
+                            padding: 18,
+                            cornerRadius: 12,
                             callbacks: {
                                 label: function(context) {
-                                    if(context.datasetIndex === 2) return ` Titik Potong: (${str_x}, ${str_y})`;
-                                    return ` ${context.dataset.label} (x: ${context.parsed.x.toFixed(1)}, y: ${context.parsed.y.toFixed(1)})`;
+                                    if(context.datasetIndex === 2) return ` HP: (${str_x}, ${str_y})`;
+                                    return ` (x: ${context.parsed.x.toFixed(2)}, y: ${context.parsed.y.toFixed(2)})`;
                                 }
                             }
                         },
                         zoom: {
                             pan: { 
-                                enabled: true, 
-                                mode: 'xy', 
-                                threshold: 10,
-                                onPan: function({chart}) {
-                                    perbaruiGaris(chart, a1, b1, c1, a2, b2, c2, x_sol, y_sol);
-                                }
+                                enabled: true, mode: 'xy', threshold: 10,
+                                onPan: function({chart}) { perbaruiGaris(chart, a1, b1, c1, a2, b2, c2, x_sol, y_sol); }
                             },
                             zoom: { 
-                                wheel: { enabled: true, speed: 0.1 }, 
-                                pinch: { enabled: true }, 
-                                mode: 'xy',
-                                onZoom: function({chart}) {
-                                    perbaruiGaris(chart, a1, b1, c1, a2, b2, c2, x_sol, y_sol);
-                                }
+                                wheel: { enabled: true, speed: 0.1 }, pinch: { enabled: true }, mode: 'xy',
+                                onZoom: function({chart}) { perbaruiGaris(chart, a1, b1, c1, a2, b2, c2, x_sol, y_sol); }
                             }
                         }
                     },
                     scales: { 
                         x: { 
-                            type: 'linear', 
-                            min: x_sol - view_rentang, max: x_sol + view_rentang,
-                            grid: { color: (ctx) => ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.6)' : 'rgba(55, 65, 81, 0.4)', lineWidth: (ctx) => ctx.tick.value === 0 ? 2 : 1 }
+                            type: 'linear', min: x_sol - view_rentang, max: x_sol + view_rentang,
+                            grid: { color: (ctx) => ctx.tick.value === 0 ? '#1c1917' : 'rgba(28, 25, 23, 0.1)', lineWidth: (ctx) => ctx.tick.value === 0 ? 4 : 2 }
                         }, 
                         y: { 
-                            type: 'linear', 
-                            min: y_sol - view_rentang, max: y_sol + view_rentang,
-                            grid: { color: (ctx) => ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.6)' : 'rgba(55, 65, 81, 0.4)', lineWidth: (ctx) => ctx.tick.value === 0 ? 2 : 1 }
+                            type: 'linear', min: y_sol - view_rentang, max: y_sol + view_rentang,
+                            grid: { color: (ctx) => ctx.tick.value === 0 ? '#1c1917' : 'rgba(28, 25, 23, 0.1)', lineWidth: (ctx) => ctx.tick.value === 0 ? 4 : 2 }
                         } 
                     }
                 }
@@ -625,13 +679,13 @@
 
         // ================= PROGRAM UTAMA =================
         function jalankanKalkulator() {
-            outputText = "";
+            resetSteps();
             document.getElementById('grafik-box').classList.add('hidden');
             let hasilContainer = document.getElementById('hasil-container');
             
-            hasilContainer.classList.remove('animate-fade-in');
+            hasilContainer.classList.remove('animate-pop-in');
             void hasilContainer.offsetWidth; 
-            hasilContainer.classList.add('animate-fade-in');
+            hasilContainer.classList.add('animate-pop-in');
 
             if(myChart) myChart.destroy();
 
@@ -644,14 +698,14 @@
             
             let pilihan = document.querySelector('input[name="metode"]:checked').value;
 
-            out(">> PERSAMAAN YANG AKAN DISELESAIKAN:");
+            buatStep("0. PERSAMAAN DIKETAHUI", "bg-[#c4b5fd]", "text-stone-900");
             cetak_persamaan(format_angka(a1), format_angka(b1), format_angka(c1), 1);
             cetak_persamaan(format_angka(a2), format_angka(b2), format_angka(c2), 2);
-            out("=================================================");
             
             let D = a1 * b2 - a2 * b1;
             if (D === 0) {
-                out("\n⚠️ Peringatan: Determinan = 0");
+                buatStep("KESIMPULAN", "bg-[#fca5a5]", "text-stone-900");
+                out("Determinan = 0.");
                 out("Kedua garis ini sejajar (tidak ada solusi) atau berimpit (solusi tak hingga).");
             } else {
                 if (pilihan === '1') metode_substitusi(a1, b1, c1, a2, b2, c2);
@@ -660,8 +714,8 @@
                 else if (pilihan === '4') metode_grafik(a1, b1, c1, a2, b2, c2);
             }
 
+            renderSteps();
             hasilContainer.classList.remove('hidden');
-            document.getElementById('terminal-output').innerText = outputText;
         }
     </script>
 </body>
